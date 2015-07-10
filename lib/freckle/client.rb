@@ -18,11 +18,11 @@ module Freckle
       @http.use_ssl = true
     end
 
-    private
-
     def get(path, params = nil)
       request(Net::HTTP::Get.new(request_uri(path, params)))
     end
+
+    private
 
     def post(path, attributes)
       request(Net::HTTP::Post.new(path), attributes)
@@ -56,7 +56,12 @@ module Freckle
         :no_content
       when Net::HTTPSuccess
         if http_response['Content-Type'] && http_response['Content-Type'].split(';').first == 'application/json'
-          JSON.parse(http_response.body, symbolize_names: true, object_class: Record)
+          JSON.parse(http_response.body, symbolize_names: true, object_class: Record).tap do |object|
+            if http_response['Link'] && next_page = http_response['Link'][/<([^>]+)>; rel="next"/, 1]
+              object.singleton_class.module_eval { attr_accessor :next_page }
+              object.next_page = URI.parse(next_page).request_uri
+            end
+          end
         else
           http_response.body
         end

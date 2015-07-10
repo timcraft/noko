@@ -145,6 +145,15 @@ describe 'Freckle::Client' do
     end
   end
 
+  it 'sets a next_page attribute on the response object for responses with rel next links' do
+    @json_response[:body] = '[]'
+    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="next"'
+
+    @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
+
+    @client.get_entries.next_page.must_equal('/v2/entries?page=2')
+  end
+
   it 'raises an exception for authentication errors' do
     @request = stub_request(:get, "#@base_url/timers").with(@auth_header).to_return(@json_response.merge(status: 401))
 
