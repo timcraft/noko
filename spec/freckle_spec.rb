@@ -145,6 +145,58 @@ describe 'Freckle::Client' do
     end
   end
 
+  describe 'get_expenses method' do
+    it 'fetches the expenses resource and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/expenses").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_expenses.must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/expenses?invoiced=true")
+
+      @client.get_expenses(invoiced: true)
+    end
+
+    it 'encodes an array of ids into a single filter parameter' do
+      @request = stub_request(:get, "#@base_url/expenses?project_ids=4,5,6")
+
+      @client.get_expenses(project_ids: %w(4 5 6))
+    end
+  end
+
+  describe 'get_expense method' do
+    it 'fetches the expense resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/expenses/#@id").with(@auth_header).to_return(@json_response)
+
+      @client.get_expense(@id).must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'create_expense method' do
+    it 'posts the given attributes to the expenses resource and returns the decoded response object' do
+      @request = stub_request(:post, "#@base_url/expenses").with(@json_request).to_return(@json_response.merge(status: 201))
+
+      @client.create_expense(date: Date.today, project_id: @project_id, price: '14.55').must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'update_expense method' do
+    it 'updates the expense resource with the given id and returns the decoded response object' do
+      @request = stub_request(:put, "#@base_url/expenses/#@id").with(@json_request).to_return(@json_response)
+
+      @client.update_expense(@id, price: '19.99').must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'delete_expense method' do
+    it 'deletes the expense resource with the given id' do
+      @request = stub_request(:delete, "#@base_url/expenses/#@id").with(@auth_header).to_return(status: 204)
+
+      @client.delete_expense(@id)
+    end
+  end
+
   it 'sets a next_page attribute on the response object for responses with rel next links' do
     @json_response[:body] = '[]'
     @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="next"'
