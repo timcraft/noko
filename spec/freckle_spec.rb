@@ -154,6 +154,14 @@ describe 'Freckle::Client' do
     @client.get_entries.next_page.must_equal('/v2/entries?page=2')
   end
 
+  it 'supports authorization using an oauth access token instead of a personal access token' do
+    @client = Freckle::Client.new(access_token: 'oauth2-access-token', user_agent: @user_agent)
+
+    @request = stub_request(:get, "#@base_url/timers").with(headers: {'Authorization' => 'token oauth2-access-token'})
+
+    @client.get_timers
+  end
+
   it 'raises an exception for authentication errors' do
     @request = stub_request(:get, "#@base_url/timers").with(@auth_header).to_return(@json_response.merge(status: 401))
 

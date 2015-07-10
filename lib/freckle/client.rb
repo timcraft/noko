@@ -7,7 +7,11 @@ require 'json'
 module Freckle
   class Client
     def initialize(options = {})
-      @token = options.fetch(:token)
+      if options.key?(:access_token)
+        @auth_header, @auth_value = 'Authorization', "token #{options[:access_token]}"
+      else
+        @auth_header, @auth_value = 'X-FreckleToken', options.fetch(:token)
+      end
 
       @user_agent = options.fetch(:user_agent)
 
@@ -38,7 +42,7 @@ module Freckle
 
     def request(http_request, body_object = nil)
       http_request['User-Agent'] = @user_agent
-      http_request['X-FreckleToken'] = @token
+      http_request[@auth_header] = @auth_value
 
       if body_object
         http_request['Content-Type'] = 'application/json'
