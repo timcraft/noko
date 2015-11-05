@@ -205,6 +205,82 @@ describe 'Freckle::Client' do
     end
   end
 
+  describe 'get_tags method' do
+    it 'fetches the tags resource and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/tags").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_tags.must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/tags?billable=true")
+
+      @client.get_tags(billable: true)
+    end
+  end
+
+  describe 'create_tags method' do
+    it 'posts the given namaes to the tags resource and returns the decoded response object' do
+      @request = stub_request(:post, "#@base_url/tags").with(@json_request).to_return(@json_response.merge(status: 201, body: '[]'))
+
+      @client.create_tags(%w(freckle)).must_equal([])
+    end
+  end
+
+  describe 'get_tag method' do
+    it 'fetches the tag resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/tags/#@id").with(@auth_header).to_return(@json_response)
+
+      @client.get_tag(@id).must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'get_tag_entries method' do
+    it 'fetches the tag entries resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/tags/#@id/entries").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_tag_entries(@id).must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/tags/#@id/entries?billable=true")
+
+      @client.get_tag_entries(@id, billable: true)
+    end
+  end
+
+  describe 'update_tag method' do
+    it 'updates the tag resource with the given id and returns the decoded response object' do
+      @request = stub_request(:put, "#@base_url/tags/#@id").with(@json_request).to_return(@json_response)
+
+      @client.update_tag(@id, name: 'freckle').must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'merge_tags method' do
+    it 'updates the tag merge resource with the given id and tag id' do
+      @request = stub_request(:put, "#@base_url/tags/#@id/merge").with(@json_request.merge(body: '{"tag_id":5678}')).to_return(status: 204)
+
+      @client.merge_tags(@id, 5678)
+    end
+  end
+
+  describe 'delete_tag method' do
+    it 'deletes the tag resource with the given id' do
+      @request = stub_request(:delete, "#@base_url/tags/#@id").with(@auth_header).to_return(status: 204)
+
+      @client.delete_tag(@id)
+    end
+  end
+
+  describe 'delete_tags method' do
+    it 'updates the tags delete resource with the given tag ids' do
+      @request = stub_request(:put, "#@base_url/tags/delete").with(@json_request.merge(body: '{"tag_ids":[1234]}')).to_return(status: 204)
+
+      @client.delete_tags([@id])
+    end
+  end
+
   it 'sets a next_page attribute on the response object for responses with rel next links' do
     @json_response[:body] = '[]'
     @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="next"'
