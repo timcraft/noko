@@ -69,5 +69,9 @@ module Freckle
     def delete_expense(id)
       delete("/v2/expenses/#{id}")
     end
+
+    def get_account
+      get('/v2/account')
+    end
   end
 end

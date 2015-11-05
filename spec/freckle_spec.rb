@@ -197,6 +197,14 @@ describe 'Freckle::Client' do
     end
   end
 
+  describe 'get_account method' do
+    it 'fetches the account resource and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/account").with(@auth_header).to_return(@json_response)
+
+      @client.get_account
+    end
+  end
+
   it 'sets a next_page attribute on the response object for responses with rel next links' do
     @json_response[:body] = '[]'
     @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="next"'
