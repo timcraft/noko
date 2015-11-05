@@ -54,8 +54,6 @@ module Freckle
 
     def parse(http_response)
       case http_response
-      when Net::HTTPUnauthorized
-        raise AuthenticationError
       when Net::HTTPNoContent
         :no_content
       when Net::HTTPSuccess
@@ -69,6 +67,12 @@ module Freckle
         else
           http_response.body
         end
+      when Net::HTTPBadRequest
+        object = JSON.parse(http_response.body, symbolize_names: true)
+
+        raise Error, "freckle api error: #{object.fetch(:message)}"
+      when Net::HTTPUnauthorized
+        raise AuthenticationError
       else
         raise Error, "freckle api error: unexpected #{http_response.code} response from #{@host}"
       end

@@ -434,8 +434,18 @@ describe 'Freckle::Client' do
     @client.get_timers
   end
 
+  it 'raises an exception with the server error message for bad request errors' do
+    message = 'The Project cannot be deleted because it has entries, expenses, or invoices.'
+
+    stub_request(:delete, "#@base_url/projects/#@id").to_return(@json_response.merge(status: 400, body: %({"message":"#{message}"})))
+
+    exception = proc { @client.delete_project(@id) }.must_raise(Freckle::Error)
+
+    exception.message.must_include(message)
+  end
+
   it 'raises an exception for authentication errors' do
-    @request = stub_request(:get, "#@base_url/timers").with(@auth_header).to_return(@json_response.merge(status: 401))
+    stub_request(:get, "#@base_url/timers").to_return(@json_response.merge(status: 401))
 
     proc { @client.get_timers }.must_raise(Freckle::AuthenticationError)
   end
