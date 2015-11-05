@@ -10,7 +10,7 @@ describe 'Freckle::Client' do
 
     @base_url = 'https://api.letsfreckle.com/v2'
 
-    @entry_id, @project_id, @id = 1234
+    @entry_id = @project_id = @id = 1234
 
     @auth_header = {headers: {'X-FreckleToken' => @token}}
 
