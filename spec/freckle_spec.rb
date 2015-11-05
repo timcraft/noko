@@ -281,6 +281,142 @@ describe 'Freckle::Client' do
     end
   end
 
+  describe 'get_projects method' do
+    it 'fetches the projects resource and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/projects").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_projects.must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/projects?billable=true")
+
+      @client.get_projects(billable: true)
+    end
+  end
+
+  describe 'get_project method' do
+    it 'fetches the project resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/projects/#@id").with(@auth_header).to_return(@json_response)
+
+      @client.get_project(@id).must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'create_project method' do
+    it 'posts the given attributes to the projects resource and returns the decoded response object' do
+      @request = stub_request(:post, "#@base_url/projects").with(@json_request).to_return(@json_response.merge(status: 201))
+
+      @client.create_project(name: 'Gear GmbH').must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'get_project_entries method' do
+    it 'fetches the project entries resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/projects/#@id/entries").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_project_entries(@id).must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/projects/#@id/entries?billable=true")
+
+      @client.get_project_entries(@id, billable: true)
+    end
+  end
+
+  describe 'get_project_invoices method' do
+    it 'fetches the project invoices resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/projects/#@id/invoices").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_project_invoices(@id).must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/projects/#@id/invoices?state=awaiting_payment")
+
+      @client.get_project_invoices(@id, state: :awaiting_payment)
+    end
+  end
+
+  describe 'get_project_participants method' do
+    it 'fetches the project participants resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/projects/#@id/participants").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_project_participants(@id).must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/projects/#@id/participants?role=freelancer")
+
+      @client.get_project_participants(@id, role: :freelancer)
+    end
+  end
+
+  describe 'update_project method' do
+    it 'updates the project resource with the given id and returns the decoded response object' do
+      @request = stub_request(:put, "#@base_url/projects/#@id").with(@json_request).to_return(@json_response)
+
+      @client.update_project(@id, color: '#ff9898').must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'merge_projects method' do
+    it 'updates the project merge resource with the given id and project id' do
+      @request = stub_request(:put, "#@base_url/projects/#@id/merge").with(@json_request.merge(body: '{"project_id":5678}')).to_return(status: 204)
+
+      @client.merge_projects(@id, 5678)
+    end
+  end
+
+  describe 'delete_project method' do
+    it 'deletes the project resource with the given id' do
+      @request = stub_request(:delete, "#@base_url/projects/#@id").with(@auth_header).to_return(status: 204)
+
+      @client.delete_project(@id)
+    end
+  end
+
+  describe 'archive_project method' do
+    it 'updates the project archive resource with the given id' do
+      @request = stub_request(:put, "#@base_url/projects/#@id/archive").with(@auth_header).to_return(status: 204)
+
+      @client.archive_project(@id)
+    end
+  end
+
+  describe 'unarchive_project method' do
+    it 'updates the project unarchive resource with the given id' do
+      @request = stub_request(:put, "#@base_url/projects/#@id/unarchive").with(@auth_header).to_return(status: 204)
+
+      @client.unarchive_project(@id)
+    end
+  end
+
+  describe 'archive_projects method' do
+    it 'updates the projects archive resource with the given project ids' do
+      @request = stub_request(:put, "#@base_url/projects/archive").with(@json_request.merge(body: '{"project_ids":[1234]}')).to_return(status: 204)
+
+      @client.archive_projects([@id])
+    end
+  end
+
+  describe 'unarchive_projects method' do
+    it 'updates the projects unarchive resource with the given project ids' do
+      @request = stub_request(:put, "#@base_url/projects/unarchive").with(@json_request.merge(body: '{"project_ids":[1234]}')).to_return(status: 204)
+
+      @client.unarchive_projects([@id])
+    end
+  end
+
+  describe 'delete_projects method' do
+    it 'updates the projects delete resource with the given project ids' do
+      @request = stub_request(:put, "#@base_url/projects/delete").with(@json_request.merge(body: '{"project_ids":[1234]}')).to_return(status: 204)
+
+      @client.delete_projects([@id])
+    end
+  end
+
   it 'sets a next_page attribute on the response object for responses with rel next links' do
     @json_response[:body] = '[]'
     @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="next"'
