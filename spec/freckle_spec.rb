@@ -417,6 +417,96 @@ describe 'Freckle::Client' do
     end
   end
 
+  describe 'get_invoices method' do
+    it 'fetches the invoices resource and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/invoices").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_invoices.must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/invoices?state=unpaid")
+
+      @client.get_invoices(state: :unpaid)
+    end
+  end
+
+  describe 'get_invoice method' do
+    it 'fetches the invoice resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/invoices/#@id").with(@auth_header).to_return(@json_response)
+
+      @client.get_invoice(@id).must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'create_invoice method' do
+    it 'posts the given attributes to the invoices resource and returns the decoded response object' do
+      @request = stub_request(:post, "#@base_url/invoices").with(@json_request).to_return(@json_response.merge(status: 201))
+
+      @client.create_invoice(invoice_date: Date.today).must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'update_invoice method' do
+    it 'updates the invoice resource with the given id and returns the decoded response object' do
+      @request = stub_request(:put, "#@base_url/invoices/#@id").with(@json_request).to_return(@json_response)
+
+      @client.update_invoice(@id, reference: 'AB 0001').must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'mark_invoice_paid method' do
+    it 'updates the invoice paid resource with the given id' do
+      @request = stub_request(:put, "#@base_url/invoices/#@id/paid").with(@auth_header).to_return(status: 204)
+
+      @client.mark_invoice_paid(@id)
+    end
+  end
+
+  describe 'mark_invoice_unpaid method' do
+    it 'updates the invoice unpaid resource with the given id' do
+      @request = stub_request(:put, "#@base_url/invoices/#@id/unpaid").with(@auth_header).to_return(status: 204)
+
+      @client.mark_invoice_unpaid(@id)
+    end
+  end
+
+  describe 'get_invoice_entries method' do
+    it 'fetches the invoice entries resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/invoices/#@id/entries").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_invoice_entries(@id).must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/invoices/#@id/entries?billable=true")
+
+      @client.get_invoice_entries(@id, billable: true)
+    end
+  end
+
+  describe 'get_invoice_expenses method' do
+    it 'fetches the invoice expenses resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/invoices/#@id/expenses").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_invoice_expenses(@id).must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/invoices/#@id/expenses?invoiced=false")
+
+      @client.get_invoice_expenses(@id, invoiced: false)
+    end
+  end
+
+  describe 'delete_invoice method' do
+    it 'deletes the invoice resource with the given id' do
+      @request = stub_request(:delete, "#@base_url/invoices/#@id").with(@auth_header).to_return(status: 204)
+
+      @client.delete_invoice(@id)
+    end
+  end
+
   it 'sets a next_page attribute on the response object for responses with rel next links' do
     @json_response[:body] = '[]'
     @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="next"'
