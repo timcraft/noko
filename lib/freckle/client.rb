@@ -13,7 +13,7 @@ module Freckle
         @auth_header, @auth_value = 'X-FreckleToken', options.fetch(:token)
       end
 
-      @user_agent = options.fetch(:user_agent)
+      @user_agent = options.fetch(:user_agent, 'Ruby Freckle::Client')
 
       @host = 'api.letsfreckle.com'
 

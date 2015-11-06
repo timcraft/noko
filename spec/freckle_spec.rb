@@ -6,8 +6,6 @@ describe 'Freckle::Client' do
   before do
     @token = 'api_token'
 
-    @user_agent = 'account.letsfreckle.com'
-
     @base_url = 'https://api.letsfreckle.com/v2'
 
     @entry_id = @project_id = @id = 1234
@@ -18,7 +16,7 @@ describe 'Freckle::Client' do
 
     @json_response = {headers: {'Content-Type' => 'application/json;charset=utf-8'}, body: '{}'}
 
-    @client = Freckle::Client.new(token: @token, user_agent: @user_agent)
+    @client = Freckle::Client.new(token: @token)
   end
 
   after do
@@ -516,8 +514,18 @@ describe 'Freckle::Client' do
     @client.get_entries.next_page.must_equal('/v2/entries?page=2')
   end
 
-  it 'supports authorization using an oauth access token instead of a personal access token' do
-    @client = Freckle::Client.new(access_token: 'oauth2-access-token', user_agent: @user_agent)
+  it 'provides a user_agent option for setting the user agent header' do
+    user_agent = 'account.letsfreckle.com'
+
+    @client = Freckle::Client.new(token: @token, user_agent: user_agent)
+
+    @request = stub_request(:get, "#@base_url/timers").with(headers: {'User-Agent' => user_agent})
+
+    @client.get_timers
+  end
+
+  it 'provides an access_token option for authorization using an oauth access token' do
+    @client = Freckle::Client.new(access_token: 'oauth2-access-token')
 
     @request = stub_request(:get, "#@base_url/timers").with(headers: {'Authorization' => 'token oauth2-access-token'})
 
