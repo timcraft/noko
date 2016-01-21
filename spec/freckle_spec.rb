@@ -505,6 +505,50 @@ describe 'Freckle::Client' do
     end
   end
 
+  describe 'get_current_user method' do
+    it 'fetches the current user resource and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/current_user").with(@auth_header).to_return(@json_response)
+
+      @client.get_current_user.must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'get_current_user_entries method' do
+    it 'fetches the current user entries resource and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/current_user/entries").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_current_user_entries.must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/current_user/entries?billable=true")
+
+      @client.get_current_user_entries(billable: true)
+    end
+  end
+
+  describe 'get_current_user_expenses method' do
+    it 'fetches the current user expenses resource and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/current_user/expenses").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_current_user_expenses.must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/current_user/expenses?invoiced=true")
+
+      @client.get_current_user_expenses(invoiced: true)
+    end
+  end
+
+  describe 'update_current_user method' do
+    it 'updates the current user resource and returns the decoded response object' do
+      @request = stub_request(:put, "#@base_url/current_user").with(@json_request).to_return(@json_response)
+
+      @client.update_current_user(week_start: 'monday').must_be_instance_of(Freckle::Record)
+    end
+  end
+
   describe 'get_users method' do
     it 'fetches the users resource and returns the decoded response object' do
       @request = stub_request(:get, "#@base_url/users").with(@auth_header).to_return(@json_response.merge(body: '[]'))
