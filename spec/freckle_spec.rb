@@ -505,6 +505,96 @@ describe 'Freckle::Client' do
     end
   end
 
+  describe 'get_users method' do
+    it 'fetches the users resource and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/users").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_users.must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/users?name=John")
+
+      @client.get_users(name: 'John')
+    end
+  end
+
+  describe 'get_user method' do
+    it 'fetches the user resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/users/#@id").with(@auth_header).to_return(@json_response)
+
+      @client.get_user(@id).must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'get_user_entries method' do
+    it 'fetches the user entries resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/users/#@id/entries").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_user_entries(@id).must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/users/#@id/entries?billable=true")
+
+      @client.get_user_entries(@id, billable: true)
+    end
+  end
+
+  describe 'get_user_expenses method' do
+    it 'fetches the user expenses resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/users/#@id/expenses").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_user_expenses(@id).must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/users/#@id/expenses?invoiced=true")
+
+      @client.get_user_expenses(@id, invoiced: true)
+    end
+  end
+
+  describe 'create_user method' do
+    it 'posts the given attributes to the users resource and returns the decoded response object' do
+      @request = stub_request(:post, "#@base_url/users").with(@json_request).to_return(@json_response.merge(status: 201))
+
+      @client.create_user(email: 'alice@example.com').must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'update_user method' do
+    it 'updates the user resource with the given id and returns the decoded response object' do
+      @request = stub_request(:put, "#@base_url/users/#@id").with(@json_request).to_return(@json_response)
+
+      @client.update_user(@id, role: 'leader').must_be_instance_of(Freckle::Record)
+    end
+  end
+
+  describe 'delete_user method' do
+    it 'deletes the user resource with the given id' do
+      @request = stub_request(:delete, "#@base_url/users/#@id").with(@auth_header).to_return(status: 204)
+
+      @client.delete_user(@id)
+    end
+  end
+
+  describe 'reactivate_user method' do
+    it 'updates the user activate resource with the given id' do
+      @request = stub_request(:put, "#@base_url/users/#@id/activate").with(@auth_header).to_return(status: 204)
+
+      @client.reactivate_user(@id)
+    end
+  end
+
+  describe 'deactivate_user method' do
+    it 'updates the user deactivate resource with the given id' do
+      @request = stub_request(:put, "#@base_url/users/#@id/deactivate").with(@auth_header).to_return(status: 204)
+
+      @client.deactivate_user(@id)
+    end
+  end
+
   it 'sets a next_page attribute on the response object for responses with rel next links' do
     @json_response[:body] = '[]'
     @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="next"'
