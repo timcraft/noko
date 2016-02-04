@@ -323,34 +323,6 @@ describe 'Freckle::Client' do
     end
   end
 
-  describe 'get_project_invoices method' do
-    it 'fetches the project invoices resource with the given id and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/projects/#@id/invoices").with(@auth_header).to_return(@json_response.merge(body: '[]'))
-
-      @client.get_project_invoices(@id).must_equal([])
-    end
-
-    it 'encodes optional filter parameters' do
-      @request = stub_request(:get, "#@base_url/projects/#@id/invoices?state=awaiting_payment")
-
-      @client.get_project_invoices(@id, state: :awaiting_payment)
-    end
-  end
-
-  describe 'get_project_participants method' do
-    it 'fetches the project participants resource with the given id and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/projects/#@id/participants").with(@auth_header).to_return(@json_response.merge(body: '[]'))
-
-      @client.get_project_participants(@id).must_equal([])
-    end
-
-    it 'encodes optional filter parameters' do
-      @request = stub_request(:get, "#@base_url/projects/#@id/participants?role=freelancer")
-
-      @client.get_project_participants(@id, role: :freelancer)
-    end
-  end
-
   describe 'update_project method' do
     it 'updates the project resource with the given id and returns the decoded response object' do
       @request = stub_request(:put, "#@base_url/projects/#@id").with(@json_request).to_return(@json_response)

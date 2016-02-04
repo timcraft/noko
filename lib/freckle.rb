@@ -122,14 +122,6 @@ module Freckle
       get("/v2/projects/#{id}/entries", params)
     end
 
-    def get_project_invoices(id, params = nil)
-      get("/v2/projects/#{id}/invoices", params)
-    end
-
-    def get_project_participants(id, params = nil)
-      get("/v2/projects/#{id}/participants", params)
-    end
-
     def update_project(id, attributes)
       put("/v2/projects/#{id}", attributes)
     end
