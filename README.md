@@ -1,6 +1,13 @@
-# freckle
+# freckles
 
 Ruby client for [Version 2 of the Freckle API](http://developer.letsfreckle.com/v2/).
+
+
+## Install
+
+```
+$ gem install freckles
+```
 
 
 ## Quick start
