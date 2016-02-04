@@ -323,6 +323,20 @@ describe 'Freckle::Client' do
     end
   end
 
+  describe 'get_project_expenses method' do
+    it 'fetches the project expenses resource with the given id and returns the decoded response object' do
+      @request = stub_request(:get, "#@base_url/projects/#@id/expenses").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+
+      @client.get_project_expenses(@id).must_equal([])
+    end
+
+    it 'encodes optional filter parameters' do
+      @request = stub_request(:get, "#@base_url/projects/#@id/expenses?invoiced=true")
+
+      @client.get_project_expenses(@id, invoiced: true)
+    end
+  end
+
   describe 'update_project method' do
     it 'updates the project resource with the given id and returns the decoded response object' do
       @request = stub_request(:put, "#@base_url/projects/#@id").with(@json_request).to_return(@json_response)
