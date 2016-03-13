@@ -634,6 +634,15 @@ describe 'Freckle::Client' do
     @client.get_entries.next_page.must_equal('/v2/entries?page=2')
   end
 
+  it 'sets a last_page attribute on the response object for responses with rel last links' do
+    @json_response[:body] = '[]'
+    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=5>; rel="last"'
+
+    @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
+
+    @client.get_entries.last_page.must_equal('/v2/entries?page=5')
+  end
+
   it 'provides a user_agent option for setting the user agent header' do
     user_agent = 'account.letsfreckle.com'
 
