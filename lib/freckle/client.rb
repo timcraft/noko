@@ -59,9 +59,8 @@ module Freckle
       when Net::HTTPSuccess
         if http_response['Content-Type'] && http_response['Content-Type'].split(';').first == 'application/json'
           JSON.parse(http_response.body, symbolize_names: true, object_class: Record).tap do |object|
-            if http_response['Link'] && next_page = http_response['Link'][/<([^>]+)>; rel="next"/, 1]
-              object.singleton_class.module_eval { attr_accessor :next_page }
-              object.next_page = URI.parse(next_page).request_uri
+            if http_response['Link']
+              store_next_and_last_page_links(http_response, object)
             end
           end
         else
@@ -90,6 +89,16 @@ module Freckle
 
     def escape(component)
       CGI.escape(component.to_s)
+    end
+
+    def store_next_and_last_page_links(http_response, object)
+      ["next", "last"].inject({}) do |result, value|
+        if result[value] = http_response['Link'][/<([^>]+)>; rel="#{value}"/, 1]
+          object.singleton_class.module_eval { attr_accessor :"#{value}_page" }
+          object.send("#{value}_page=", URI.parse(result[value]).request_uri)
+        end
+        result
+      end
     end
   end
 end
