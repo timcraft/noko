@@ -220,7 +220,7 @@ describe 'Freckle::Client' do
   end
 
   describe 'create_tags method' do
-    it 'posts the given namaes to the tags resource and returns the decoded response object' do
+    it 'posts the given names to the tags resource and returns the decoded response object' do
       @request = stub_request(:post, "#@base_url/tags").with(@json_request).to_return(@json_array.merge(status: 201))
 
       @client.create_tags(%w(freckle)).must_equal([])
