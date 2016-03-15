@@ -16,6 +16,8 @@ describe 'Freckle::Client' do
 
     @json_response = {headers: {'Content-Type' => 'application/json;charset=utf-8'}, body: '{}'}
 
+    @json_array = {headers: {'Content-Type' => 'application/json;charset=utf-8'}, body: '[]'}
+
     @client = Freckle::Client.new(token: @token)
   end
 
@@ -25,7 +27,7 @@ describe 'Freckle::Client' do
 
   describe 'get_timers method' do
     it 'fetches the timers resource and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/timers").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/timers").with(@auth_header).to_return(@json_array)
 
       @client.get_timers.must_equal([])
     end
@@ -93,7 +95,7 @@ describe 'Freckle::Client' do
 
   describe 'get_entries method' do
     it 'fetches the entries resource and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/entries").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/entries").with(@auth_header).to_return(@json_array)
 
       @client.get_entries.must_equal([])
     end
@@ -145,7 +147,7 @@ describe 'Freckle::Client' do
 
   describe 'get_expenses method' do
     it 'fetches the expenses resource and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/expenses").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/expenses").with(@auth_header).to_return(@json_array)
 
       @client.get_expenses.must_equal([])
     end
@@ -205,7 +207,7 @@ describe 'Freckle::Client' do
 
   describe 'get_tags method' do
     it 'fetches the tags resource and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/tags").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/tags").with(@auth_header).to_return(@json_array)
 
       @client.get_tags.must_equal([])
     end
@@ -219,7 +221,7 @@ describe 'Freckle::Client' do
 
   describe 'create_tags method' do
     it 'posts the given namaes to the tags resource and returns the decoded response object' do
-      @request = stub_request(:post, "#@base_url/tags").with(@json_request).to_return(@json_response.merge(status: 201, body: '[]'))
+      @request = stub_request(:post, "#@base_url/tags").with(@json_request).to_return(@json_array.merge(status: 201))
 
       @client.create_tags(%w(freckle)).must_equal([])
     end
@@ -235,7 +237,7 @@ describe 'Freckle::Client' do
 
   describe 'get_tag_entries method' do
     it 'fetches the tag entries resource with the given id and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/tags/#@id/entries").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/tags/#@id/entries").with(@auth_header).to_return(@json_array)
 
       @client.get_tag_entries(@id).must_equal([])
     end
@@ -281,7 +283,7 @@ describe 'Freckle::Client' do
 
   describe 'get_projects method' do
     it 'fetches the projects resource and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/projects").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/projects").with(@auth_header).to_return(@json_array)
 
       @client.get_projects.must_equal([])
     end
@@ -311,7 +313,7 @@ describe 'Freckle::Client' do
 
   describe 'get_project_entries method' do
     it 'fetches the project entries resource with the given id and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/projects/#@id/entries").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/projects/#@id/entries").with(@auth_header).to_return(@json_array)
 
       @client.get_project_entries(@id).must_equal([])
     end
@@ -325,7 +327,7 @@ describe 'Freckle::Client' do
 
   describe 'get_project_expenses method' do
     it 'fetches the project expenses resource with the given id and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/projects/#@id/expenses").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/projects/#@id/expenses").with(@auth_header).to_return(@json_array)
 
       @client.get_project_expenses(@id).must_equal([])
     end
@@ -403,7 +405,7 @@ describe 'Freckle::Client' do
 
   describe 'get_invoices method' do
     it 'fetches the invoices resource and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/invoices").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/invoices").with(@auth_header).to_return(@json_array)
 
       @client.get_invoices.must_equal([])
     end
@@ -457,7 +459,7 @@ describe 'Freckle::Client' do
 
   describe 'get_invoice_entries method' do
     it 'fetches the invoice entries resource with the given id and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/invoices/#@id/entries").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/invoices/#@id/entries").with(@auth_header).to_return(@json_array)
 
       @client.get_invoice_entries(@id).must_equal([])
     end
@@ -471,7 +473,7 @@ describe 'Freckle::Client' do
 
   describe 'get_invoice_expenses method' do
     it 'fetches the invoice expenses resource with the given id and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/invoices/#@id/expenses").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/invoices/#@id/expenses").with(@auth_header).to_return(@json_array)
 
       @client.get_invoice_expenses(@id).must_equal([])
     end
@@ -501,7 +503,7 @@ describe 'Freckle::Client' do
 
   describe 'get_current_user_entries method' do
     it 'fetches the current user entries resource and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/current_user/entries").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/current_user/entries").with(@auth_header).to_return(@json_array)
 
       @client.get_current_user_entries.must_equal([])
     end
@@ -515,7 +517,7 @@ describe 'Freckle::Client' do
 
   describe 'get_current_user_expenses method' do
     it 'fetches the current user expenses resource and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/current_user/expenses").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/current_user/expenses").with(@auth_header).to_return(@json_array)
 
       @client.get_current_user_expenses.must_equal([])
     end
@@ -537,7 +539,7 @@ describe 'Freckle::Client' do
 
   describe 'get_users method' do
     it 'fetches the users resource and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/users").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/users").with(@auth_header).to_return(@json_array)
 
       @client.get_users.must_equal([])
     end
@@ -559,7 +561,7 @@ describe 'Freckle::Client' do
 
   describe 'get_user_entries method' do
     it 'fetches the user entries resource with the given id and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/users/#@id/entries").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/users/#@id/entries").with(@auth_header).to_return(@json_array)
 
       @client.get_user_entries(@id).must_equal([])
     end
@@ -573,7 +575,7 @@ describe 'Freckle::Client' do
 
   describe 'get_user_expenses method' do
     it 'fetches the user expenses resource with the given id and returns the decoded response object' do
-      @request = stub_request(:get, "#@base_url/users/#@id/expenses").with(@auth_header).to_return(@json_response.merge(body: '[]'))
+      @request = stub_request(:get, "#@base_url/users/#@id/expenses").with(@auth_header).to_return(@json_array)
 
       @client.get_user_expenses(@id).must_equal([])
     end
@@ -626,10 +628,9 @@ describe 'Freckle::Client' do
   end
 
   it 'sets a next_page attribute on the response object for responses with rel next links' do
-    @json_response[:body] = '[]'
-    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="next"'
+    @json_array[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="next"'
 
-    @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
+    @request = stub_request(:get, "#@base_url/entries").to_return(@json_array)
 
     warning = nil
 
@@ -641,37 +642,33 @@ describe 'Freckle::Client' do
   end
 
   it 'sets a link attribute on the response object for responses with rel next links' do
-    @json_response[:body] = '[]'
-    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=3>; rel="next"'
+    @json_array[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=3>; rel="next"'
 
-    @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
+    @request = stub_request(:get, "#@base_url/entries").to_return(@json_array)
 
     @client.get_entries.link.next.must_equal('/v2/entries?page=3')
   end
 
   it 'sets a link attribute on the response object for responses with rel prev links' do
-    @json_response[:body] = '[]'
-    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="prev"'
+    @json_array[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="prev"'
 
-    @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
+    @request = stub_request(:get, "#@base_url/entries").to_return(@json_array)
 
     @client.get_entries.link.prev.must_equal('/v2/entries?page=2')
   end
 
   it 'sets a link attribute on the response object for responses with rel last links' do
-    @json_response[:body] = '[]'
-    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=50>; rel="last"'
+    @json_array[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=50>; rel="last"'
 
-    @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
+    @request = stub_request(:get, "#@base_url/entries").to_return(@json_array)
 
     @client.get_entries.link.last.must_equal('/v2/entries?page=50')
   end
 
   it 'sets a link attribute on the response object for responses with rel first links' do
-    @json_response[:body] = '[]'
-    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=1>; rel="first"'
+    @json_array[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=1>; rel="first"'
 
-    @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
+    @request = stub_request(:get, "#@base_url/entries").to_return(@json_array)
 
     @client.get_entries.link.first.must_equal('/v2/entries?page=1')
   end
