@@ -631,16 +631,49 @@ describe 'Freckle::Client' do
 
     @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
 
-    @client.get_entries.next_page.must_equal('/v2/entries?page=2')
+    warning = nil
+
+    Kernel.stub :warn, proc { |message| warning = message } do
+      @client.get_entries.next_page.must_equal('/v2/entries?page=2')
+    end
+
+    warning.must_match(/pagination with .next_page is deprecated/)
   end
 
-  it 'sets a last_page attribute on the response object for responses with rel last links' do
+  it 'sets a link attribute on the response object for responses with rel next links' do
     @json_response[:body] = '[]'
-    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=5>; rel="last"'
+    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=3>; rel="next"'
 
     @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
 
-    @client.get_entries.last_page.must_equal('/v2/entries?page=5')
+    @client.get_entries.link.next.must_equal('/v2/entries?page=3')
+  end
+
+  it 'sets a link attribute on the response object for responses with rel prev links' do
+    @json_response[:body] = '[]'
+    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="prev"'
+
+    @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
+
+    @client.get_entries.link.prev.must_equal('/v2/entries?page=2')
+  end
+
+  it 'sets a link attribute on the response object for responses with rel last links' do
+    @json_response[:body] = '[]'
+    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=50>; rel="last"'
+
+    @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
+
+    @client.get_entries.link.last.must_equal('/v2/entries?page=50')
+  end
+
+  it 'sets a link attribute on the response object for responses with rel first links' do
+    @json_response[:body] = '[]'
+    @json_response[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=1>; rel="first"'
+
+    @request = stub_request(:get, "#@base_url/entries").to_return(@json_response)
+
+    @client.get_entries.link.first.must_equal('/v2/entries?page=1')
   end
 
   it 'provides a user_agent option for setting the user agent header' do

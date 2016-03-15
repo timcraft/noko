@@ -59,9 +59,15 @@ module Freckle
       when Net::HTTPSuccess
         if http_response['Content-Type'] && http_response['Content-Type'].split(';').first == 'application/json'
           JSON.parse(http_response.body, symbolize_names: true, object_class: Record).tap do |object|
-            if http_response['Link'] && next_page = http_response['Link'][/<([^>]+)>; rel="next"/, 1]
-              object.singleton_class.module_eval { attr_accessor :next_page }
-              object.next_page = URI.parse(next_page).request_uri
+            if http_response['Link']
+              object.singleton_class.module_eval { attr_accessor :link }
+              object.link = parse_link_header(http_response['Link'])
+
+              def object.next_page
+                Kernel.warn '[freckles] pagination with .next_page is deprecated and will be removed, please use .link.next instead'
+
+                link.next
+              end
             end
           end
         else
@@ -75,6 +81,14 @@ module Freckle
         raise AuthenticationError
       else
         raise Error, "freckle api error: unexpected #{http_response.code} response from #{@host}"
+      end
+    end
+
+    LINK_REGEXP = /<([^>]+)>; rel="(\w+)"/
+
+    def parse_link_header(string)
+      string.scan(LINK_REGEXP).each_with_object(Record.new) do |(uri, rel), record|
+        record[rel.to_sym] = URI.parse(uri).request_uri
       end
     end
 
