@@ -627,6 +627,20 @@ describe 'Freckle::Client' do
     end
   end
 
+  describe 'invoiced_outside_of_freckle method' do
+    it 'updates entries as being invoiced outside of Freckle' do
+      @request = stub_request(:put, "#@base_url/entries/invoiced_outside_of_freckle").with(@json_request.merge(body: '{"entry_ids":[1234],"date":"2018-09-01"}')).to_return(status: 204)
+
+      @client.entries_invoiced_outside_of_freckle([@id], '2018-09-01')
+    end
+
+    it 'updates entry as being invoiced outside of Freckle' do
+      @request = stub_request(:put, "#@base_url/entries/#@id/invoiced_outside_of_freckle").with(@json_request.merge(body: '{"date":"2018-09-01"}')).to_return(status: 204)
+
+      @client.entry_invoiced_outside_of_freckle(@id, '2018-09-01')
+    end
+  end
+
   it 'sets a next_page attribute on the response object for responses with rel next links' do
     @json_array[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="next"'
 

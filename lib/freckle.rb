@@ -126,6 +126,15 @@ module Freckle
       get("/v2/projects/#{id}/expenses", params)
     end
 
+    def entries_invoiced_outside_of_freckle(entry_ids, date)
+      put('/v2/entries/invoiced_outside_of_freckle',
+        entry_ids: entry_ids, date: date)
+    end
+
+    def entry_invoiced_outside_of_freckle(id, date)
+      put("/v2/entries/#{id}/invoiced_outside_of_freckle", date: date)
+    end
+
     def update_project(id, attributes)
       put("/v2/projects/#{id}", attributes)
     end
