@@ -8,8 +8,22 @@ Ruby client for [Version 2 of the Freckle API](http://developer.letsfreckle.com/
 
 ## Install
 
+Install using RubyGems:
+
 ```
 $ gem install freckles
+```
+
+Add it to your Gemfile and install using Bundler:
+
+```ruby
+gem 'freckles', require: 'freckle'
+```
+
+Clone the repository:
+
+```
+git clone git@github.com:timcraft/freckles.git
 ```
 
 
