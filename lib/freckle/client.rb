@@ -62,12 +62,6 @@ module Freckle
             if http_response['Link']
               object.singleton_class.module_eval { attr_accessor :link }
               object.link = parse_link_header(http_response['Link'])
-
-              def object.next_page
-                Kernel.warn '[freckles] pagination with .next_page is deprecated and will be removed, please use .link.next instead'
-
-                link.next
-              end
             end
           end
         else

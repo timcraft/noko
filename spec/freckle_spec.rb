@@ -627,20 +627,6 @@ describe 'Freckle::Client' do
     end
   end
 
-  it 'sets a next_page attribute on the response object for responses with rel next links' do
-    @json_array[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=2>; rel="next"'
-
-    @request = stub_request(:get, "#@base_url/entries").to_return(@json_array)
-
-    warning = nil
-
-    Kernel.stub :warn, proc { |message| warning = message } do
-      @client.get_entries.next_page.must_equal('/v2/entries?page=2')
-    end
-
-    warning.must_match(/pagination with .next_page is deprecated/)
-  end
-
   it 'sets a link attribute on the response object for responses with rel next links' do
     @json_array[:headers]['Link'] = '<https://api.letsfreckle.com/v2/entries?page=3>; rel="next"'
 
