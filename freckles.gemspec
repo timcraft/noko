@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.authors = ['Tim Craft']
   s.email = ['mail@timcraft.com']
-  s.homepage = 'http://github.com/timcraft/freckles'
+  s.homepage = 'https://github.com/timcraft/freckles'
   s.description = 'Ruby client for Version 2 of the Freckle API'
   s.summary = 'Ruby client for Version 2 of the Freckle API'
   s.files = Dir.glob('{lib,test}/**/*') + %w(LICENSE.txt README.md freckles.gemspec)
