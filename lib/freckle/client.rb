@@ -1,3 +1,4 @@
+require 'freckle/version'
 require 'freckle/errors'
 require 'freckle/link_header'
 require 'freckle/params'
@@ -14,7 +15,7 @@ module Freckle
         @auth_header, @auth_value = 'X-FreckleToken', options.fetch(:token)
       end
 
-      @user_agent = options.fetch(:user_agent, 'Ruby Freckle::Client')
+      @user_agent = options.fetch(:user_agent) { "freckles/#{VERSION} ruby/#{RUBY_VERSION}" }
 
       @host = 'api.letsfreckle.com'
 
