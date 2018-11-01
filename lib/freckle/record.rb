@@ -1,7 +1,7 @@
 module Freckle
   class Record
-    def initialize
-      @attributes = {}
+    def initialize(attributes = {})
+      @attributes = attributes
     end
 
     def [](name)
