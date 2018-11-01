@@ -1,8 +1,8 @@
 require 'freckle/errors'
 require 'freckle/link_header'
+require 'freckle/params'
 require 'freckle/record'
 require 'net/http'
-require 'cgi'
 require 'json'
 
 module Freckle
@@ -24,7 +24,7 @@ module Freckle
     end
 
     def get(path, params = nil)
-      request(Net::HTTP::Get.new(request_uri(path, params)))
+      request(Net::HTTP::Get.new(Params.join(path, params)))
     end
 
     private
@@ -77,20 +77,6 @@ module Freckle
       else
         raise Error, "freckle api error: unexpected #{http_response.code} response from #{@host}"
       end
-    end
-
-    def request_uri(path, params = nil)
-      return path if params.nil? || params.empty?
-
-      path + '?' + params.map { |k, v| "#{escape(k)}=#{array_escape(v)}" }.join('&')
-    end
-
-    def array_escape(object)
-      Array(object).map { |value| escape(value) }.join(',')
-    end
-
-    def escape(component)
-      CGI.escape(component.to_s)
     end
   end
 end
