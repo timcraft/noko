@@ -1,4 +1,5 @@
 require 'freckle/errors'
+require 'freckle/link_header'
 require 'freckle/record'
 require 'net/http'
 require 'cgi'
@@ -61,7 +62,7 @@ module Freckle
           JSON.parse(http_response.body, symbolize_names: true, object_class: Record).tap do |object|
             if http_response['Link']
               object.singleton_class.module_eval { attr_accessor :link }
-              object.link = parse_link_header(http_response['Link'])
+              object.link = LinkHeader.parse(http_response['Link'])
             end
           end
         else
@@ -75,14 +76,6 @@ module Freckle
         raise AuthenticationError
       else
         raise Error, "freckle api error: unexpected #{http_response.code} response from #{@host}"
-      end
-    end
-
-    LINK_REGEXP = /<([^>]+)>; rel="(\w+)"/
-
-    def parse_link_header(string)
-      string.scan(LINK_REGEXP).each_with_object(Record.new) do |(uri, rel), record|
-        record[rel.to_sym] = URI.parse(uri).request_uri
       end
     end
 
