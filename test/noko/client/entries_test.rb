@@ -46,12 +46,11 @@ class ClientEntriesTest < ClientTest
   def test_entry_invoiced_outside_of_freckle
     expect_request(:put, "#{base_url}/entries/#{id}/invoiced_outside_of_freckle").with(json_request).to_return(json_response)
 
-    assert_instance_of Freckle::Record, client.entry_invoiced_outside_of_freckle(id, date: '2018-09-01')
+    assert_instance_of Freckle::Record, client.entry_invoiced_outside_of_freckle(id, date: Date.parse('2019-03-04'))
   end
 
   def test_entries_invoiced_outside_of_freckle
     expect_request(:put, "#{base_url}/entries/invoiced_outside_of_freckle").with(json_request).to_return(json_response)
-
-    assert_instance_of Freckle::Record, client.entries_invoiced_outside_of_freckle(entry_ids: [2,2,3], date: '2018-09-01')
+    assert_instance_of Freckle::Record, client.entries_invoiced_outside_of_freckle(entry_ids: [2,2,3], date: Date.parse('2019-03-04'))
   end
 end
