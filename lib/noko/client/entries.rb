@@ -19,5 +19,13 @@ module Noko
     def delete_entry(id)
       delete("/v2/entries/#{id}")
     end
+
+    def mark_entry_invoiced(id, params)
+      put("/v2/entries/#{id}/marked_as_invoiced", params)
+    end
+
+    def mark_entries_invoiced(params)
+      put('/v2/entries/marked_as_invoiced', params)
+    end
   end
 end

@@ -1,6 +1,10 @@
 require_relative '../client_test'
 
 class ClientEntriesTest < ClientTest
+  def date
+    Date.parse('2019-03-04')
+  end
+
   def test_get_entries
     expect_request(:get, "#{base_url}/entries").with(auth_header).to_return(json_array_response)
 
@@ -41,5 +45,17 @@ class ClientEntriesTest < ClientTest
     expect_request(:delete, "#{base_url}/entries/#{id}").with(auth_header).to_return(status: 204)
 
     assert_equal :no_content, client.delete_entry(id)
+  end
+
+  def test_mark_entry_invoiced
+    expect_request(:put, "#{base_url}/entries/#{id}/marked_as_invoiced").with(json_request).to_return(status: 204)
+
+    assert_equal :no_content, client.mark_entry_invoiced(id, date: date)
+  end
+
+  def test_mark_entries_invoiced
+    expect_request(:put, "#{base_url}/entries/marked_as_invoiced").with(json_request).to_return(status: 204)
+
+    assert_equal :no_content, client.mark_entries_invoiced(entry_ids: ids, date: date)
   end
 end
