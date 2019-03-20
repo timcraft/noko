@@ -1,3 +1,7 @@
+# 1.3.0
+
+* Uses new application name & URL (nokotime.com)
+
 # 1.2.0
 
 * Added methods for project group resources
