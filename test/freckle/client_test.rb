@@ -16,7 +16,7 @@ class FreckleClientTest < Minitest::Test
   end
 
   def base_url
-    'https://api.letsfreckle.com/v2'
+    'https://api.nokotime.com/v2'
   end
 
   def auth_header

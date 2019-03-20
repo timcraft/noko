@@ -17,7 +17,7 @@ module Freckle
 
       @user_agent = options.fetch(:user_agent) { "freckles/#{VERSION} ruby/#{RUBY_VERSION}" }
 
-      @host = 'api.letsfreckle.com'
+      @host = 'api.nokotime.com'
 
       @http = Net::HTTP.new(@host, Net::HTTP.https_default_port)
 

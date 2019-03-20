@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.authors = ['Tim Craft']
   s.email = ['mail@timcraft.com']
   s.homepage = 'https://github.com/timcraft/freckles'
-  s.description = 'Ruby client for Version 2 of the Freckle API'
-  s.summary = 'Ruby client for Version 2 of the Freckle API'
+  s.description = 'Ruby client for Version 2 of the Freckle/Noko API'
+  s.summary = 'Ruby client for Version 2 of the Freckle/Noko API'
   s.files = Dir.glob('{lib,test}/**/*') + %w(LICENSE.txt README.md freckles.gemspec)
   s.required_ruby_version = '>= 1.9.3'
   s.add_development_dependency('rake', '~> 12')

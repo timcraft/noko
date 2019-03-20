@@ -2,7 +2,7 @@ require_relative '../client_test'
 
 class FreckleClientOptionsTest < FreckleClientTest
   def user_agent
-    'account.letsfreckle.com'
+    'account.nokotime.com'
   end
 
   def access_token
