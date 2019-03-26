@@ -72,11 +72,11 @@ module Freckle
       when Net::HTTPBadRequest
         object = JSON.parse(http_response.body, symbolize_names: true)
 
-        raise Error, "freckle api error: #{object.fetch(:message)}"
+        raise Error, object.fetch(:message)
       when Net::HTTPUnauthorized
         raise AuthenticationError
       else
-        raise Error, "freckle api error: unexpected #{http_response.code} response from #{@host}"
+        raise Error, "unexpected #{http_response.code} response from #{@host}"
       end
     end
   end
