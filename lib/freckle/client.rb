@@ -12,7 +12,7 @@ module Freckle
       if options.key?(:access_token)
         @auth_header, @auth_value = 'Authorization', "token #{options[:access_token]}"
       else
-        @auth_header, @auth_value = 'X-FreckleToken', options.fetch(:token)
+        @auth_header, @auth_value = 'X-NokoToken', options.fetch(:token)
       end
 
       @user_agent = options.fetch(:user_agent) { "freckles/#{VERSION} ruby/#{RUBY_VERSION}" }

@@ -4,7 +4,7 @@ require 'freckle'
 
 class FreckleClientTest < Minitest::Test
   def token
-    'freckle-token'
+    'token-xxx'
   end
 
   def id
@@ -20,11 +20,11 @@ class FreckleClientTest < Minitest::Test
   end
 
   def auth_header
-    {headers: {'X-FreckleToken' => token}}
+    {headers: {'X-NokoToken' => token}}
   end
 
   def json_request
-    {headers: {'X-FreckleToken' => token, 'Content-Type' => 'application/json'}, body: /\A{.+}\z/}
+    {headers: {'X-NokoToken' => token, 'Content-Type' => 'application/json'}, body: /\A{.+}\z/}
   end
 
   def json_response_headers
