@@ -1,3 +1,9 @@
+# 1.3.0
+
+* Updated to use nokotime.com hostnames (thanks @madrobby)
+
+* Updated to use X-NokoToken header
+
 # 1.2.0
 
 * Added methods for project group resources
