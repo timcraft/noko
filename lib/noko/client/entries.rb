@@ -35,5 +35,13 @@ module Noko
     def mark_entries_approved(params)
       put('/v2/entries/approved', params)
     end
+
+    def mark_entry_unapproved(id)
+      put("/v2/entries/#{id}/unapproved")
+    end
+
+    def mark_entries_unapproved(params)
+      put('/v2/entries/unapproved', params)
+    end
   end
 end

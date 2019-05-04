@@ -76,4 +76,16 @@ class ClientEntriesTest < ClientTest
 
     assert_equal :no_content, client.mark_entries_approved(entry_ids: ids, approved_at: time)
   end
+
+  def test_mark_entry_unapproved
+    expect_request(:put, "#{base_url}/entries/#{id}/unapproved").with(headers: {'X-NokoToken' => token}).to_return(status: 204)
+
+    assert_equal :no_content, client.mark_entry_unapproved(id)
+  end
+
+  def test_mark_entries_unapproved
+    expect_request(:put, "#{base_url}/entries/unapproved").with(json_request).to_return(status: 204)
+
+    assert_equal :no_content, client.mark_entries_unapproved(entry_ids: ids)
+  end
 end
