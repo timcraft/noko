@@ -1,3 +1,11 @@
+# 1.5.0
+
+* Added methods for marking entries invoiced (thanks @lcx)
+
+* Added methods for marking entries approved
+
+* Added methods for marking entries unapproved
+
 # 1.4.0
 
 * **(breaking change)** Renamed gem from freckles to noko. Steps to upgrade:
