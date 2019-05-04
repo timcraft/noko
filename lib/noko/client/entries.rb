@@ -20,12 +20,12 @@ module Noko
       delete("/v2/entries/#{id}")
     end
 
-    def entries_invoiced_outside_of_freckle(attributes={})
-      put('/v2/entries/invoiced_outside_of_freckle', attributes)
+    def entries_marked_as_invoiced(attributes={})
+      put('/v2/entries/marked_as_invoiced', attributes)
     end
 
-     def entry_invoiced_outside_of_freckle(id, attributes)
-      put("/v2/entries/#{id}/invoiced_outside_of_freckle", attributes)
+     def entry_marked_as_invoiced(id, attributes)
+      put("/v2/entries/#{id}/marked_as_invoiced", attributes)
     end
   end
 end

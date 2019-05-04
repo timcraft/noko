@@ -43,14 +43,14 @@ class ClientEntriesTest < ClientTest
     assert_equal :no_content, client.delete_entry(id)
   end
 
-  def test_entry_invoiced_outside_of_freckle
-    expect_request(:put, "#{base_url}/entries/#{id}/invoiced_outside_of_freckle").with(json_request).to_return(json_response)
+  def test_entry_marked_as_invoiced
+    expect_request(:put, "#{base_url}/entries/#{id}/marked_as_invoiced").with(json_request).to_return(json_response)
 
-    assert_instance_of Freckle::Record, client.entry_invoiced_outside_of_freckle(id, date: Date.parse('2019-03-04'))
+    assert_instance_of Freckle::Record, client.entry_marked_as_invoiced(id, date: Date.parse('2019-03-04'))
   end
 
-  def test_entries_invoiced_outside_of_freckle
-    expect_request(:put, "#{base_url}/entries/invoiced_outside_of_freckle").with(json_request).to_return(json_response)
-    assert_instance_of Freckle::Record, client.entries_invoiced_outside_of_freckle(entry_ids: [2,2,3], date: Date.parse('2019-03-04'))
+  def test_entries_marked_as_invoiced
+    expect_request(:put, "#{base_url}/entries/marked_as_invoiced").with(json_request).to_return(json_response)
+    assert_instance_of Freckle::Record, client.entries_marked_as_invoiced(entry_ids: [2,2,3], date: Date.parse('2019-03-04'))
   end
 end
