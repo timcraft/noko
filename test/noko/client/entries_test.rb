@@ -1,6 +1,10 @@
 require_relative '../client_test'
 
 class ClientEntriesTest < ClientTest
+  def time
+    Time.now.utc
+  end
+
   def date
     Date.parse('2019-03-04')
   end
@@ -57,5 +61,19 @@ class ClientEntriesTest < ClientTest
     expect_request(:put, "#{base_url}/entries/marked_as_invoiced").with(json_request).to_return(status: 204)
 
     assert_equal :no_content, client.mark_entries_invoiced(entry_ids: ids, date: date)
+  end
+
+  def test_mark_entry_approved
+    body = /\A{"approved_at":"\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}Z"}\z/
+
+    expect_request(:put, "#{base_url}/entries/#{id}/approved").with(json_request(body)).to_return(status: 204)
+
+    assert_equal :no_content, client.mark_entry_approved(id, approved_at: time.iso8601)
+  end
+
+  def test_mark_entries_approved
+    expect_request(:put, "#{base_url}/entries/approved").with(json_request).to_return(status: 204)
+
+    assert_equal :no_content, client.mark_entries_approved(entry_ids: ids, approved_at: time)
   end
 end

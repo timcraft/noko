@@ -23,8 +23,8 @@ class ClientTest < Minitest::Test
     {headers: {'X-NokoToken' => token}}
   end
 
-  def json_request
-    {headers: {'X-NokoToken' => token, 'Content-Type' => 'application/json'}, body: /\A{.+}\z/}
+  def json_request(body=/\A{.+}\z/)
+    {headers: {'X-NokoToken' => token, 'Content-Type' => 'application/json'}, body: body}
   end
 
   def json_response_headers

@@ -27,5 +27,13 @@ module Noko
     def mark_entries_invoiced(params)
       put('/v2/entries/marked_as_invoiced', params)
     end
+
+    def mark_entry_approved(id, params = nil)
+      put("/v2/entries/#{id}/approved", params)
+    end
+
+    def mark_entries_approved(params)
+      put('/v2/entries/approved', params)
+    end
   end
 end
