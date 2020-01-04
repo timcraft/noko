@@ -1,3 +1,5 @@
 source 'https://rubygems.org'
 
-gemspec
+gem 'rake', '~> 12'
+gem 'webmock', '~> 3'
+gem 'minitest', '~> 5'
