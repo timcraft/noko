@@ -13,13 +13,6 @@ class ClientWebhooksTest < ClientTest
     client.get_webhooks(name: "Notifier")
   end
 
-  def test_get_webhooks_encodes_event_params
-    skip("test this after I make a webhook")
-    expect_request(:get, "#{base_url}/webhooks?events=entry.updated,entry.updated.approved")
-
-    client.get_webhooks(events: "entry.updated, entry.updated.approved")
-  end
-
   def test_get_webhooks_encodes_state_params
     expect_request(:get, "#{base_url}/webhooks?state=disabled")
 
@@ -37,11 +30,46 @@ class ClientWebhooksTest < ClientTest
 
     assert_instance_of Noko::Record, client.create_webhook(name: "My Webhook", payload_uri: "http://testnokoapp.com/webhooks/entry_events", events: ["*"])
   end
-  # def test_update_webhook
-  # def test_add_webhook_events
-  # def test_delete_webhook_events
-  # def test_reroll_webhook_secret
-  # def test_disable_webhook
-  # def test_enable_webhook
-  # def test_delete_webhook
+
+  def test_update_webhook
+    expect_request(:put, "#{base_url}/webhooks/#{id}").with(json_request).to_return(json_response).to_return(status: 200)
+
+    assert_instance_of Noko::Record, client.update_webhook(id, name: "The Best Webhook", payload_uri: "http://dabestnokoapp.com/webhooks/entry_events")
+  end
+
+  def test_add_webhook_events
+    expect_request(:put, "#{base_url}/webhooks/#{id}/add_events").with(json_request).to_return(json_response).to_return(status: 200)
+
+    assert_instance_of Noko::Record, client.add_webhook_events(id, events: ["entry.updated"])
+  end
+
+  def test_remove_webhook_events
+    expect_request(:put, "#{base_url}/webhooks/#{id}/remove_events").with(json_request).to_return(json_response).to_return(status: 200)
+
+    assert_instance_of Noko::Record, client.remove_webhook_events(id, events: ["tag.created","tag.deleted.merged")
+  end
+
+  def test_reroll_webhook_secret
+    expect_request(:put, "#{base_url}/webhooks/#{id}/reroll_secret").with(json_request).to_return(json_response).to_return(status: 200)
+
+    assert_instance_of Noko::Record, client.reroll_webhook_secret(id)
+  end
+
+  def test_disable_webhook
+    expect_request(:put, "#{base_url}/webhooks/#{id}/disable").with(json_request).to_return(json_response).to_return(status: 204)
+
+    assert_instance_of Noko::Record, client.disable_webhook(id)
+  end
+
+  def test_enable_webhook
+    expect_request(:put, "#{base_url}/webhooks/#{id}/enable").with(json_request).to_return(json_response).to_return(status: 204)
+
+    assert_instance_of Noko::Record, client.enable_webhook(id)
+  end
+
+  def test_delete_webhook
+    expect_request(:delete, "#{base_url}/webhooks/#{id}").with(auth_header).to_return(status: 204)
+
+    assert_equal :no_content, client.delete_webhook(id)
+  end
 end
