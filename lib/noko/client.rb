@@ -3,6 +3,7 @@ require 'noko/errors'
 require 'noko/link_header'
 require 'noko/params'
 require 'noko/record'
+require 'noko/response'
 require 'net/http'
 require 'json'
 
@@ -69,14 +70,8 @@ module Noko
         else
           http_response.body
         end
-      when Net::HTTPBadRequest
-        object = JSON.parse(http_response.body, symbolize_names: true)
-
-        raise Error, object.fetch(:message)
-      when Net::HTTPUnauthorized
-        raise AuthenticationError
       else
-        raise Error, "unexpected #{http_response.code} response from #{@host}"
+        raise Response.error(http_response)
       end
     end
   end

@@ -1,5 +1,11 @@
 module Noko
-  class Error < StandardError; end
+  Error = Class.new(StandardError)
 
-  class AuthenticationError < Error; end
+  ClientError = Class.new(Error)
+
+  ServerError = Class.new(Error)
+
+  AuthenticationError = Class.new(ClientError)
+
+  NotFound = Class.new(ClientError)
 end
