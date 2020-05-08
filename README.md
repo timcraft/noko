@@ -1,38 +1,29 @@
 # noko
 
-[![Gem Version](https://badge.fury.io/rb/noko.svg)](https://badge.fury.io/rb/noko) [![Build Status](https://api.travis-ci.org/timcraft/noko.svg?branch=master)](https://travis-ci.org/timcraft/noko)
+[![Gem Version](https://badge.fury.io/rb/noko.svg)](https://badge.fury.io/rb/noko)
+![Build Status](https://github.com/timcraft/noko/workflows/Test/badge.svg)
 
 
-Ruby client for [Version 2 of the Noko/Freckle API](https://developer.nokotime.com/v2/).
+Ruby client for the [Noko API](https://developer.nokotime.com/v2/).
 
 
 ## Install
 
-Install using RubyGems:
+Using Bundler:
 
-```
-$ gem install noko
-```
+    $ bundle add noko
 
-Add it to your Gemfile and install using Bundler:
+Using RubyGems:
 
-```ruby
-gem 'noko'
-```
-
-Clone the repository:
-
-```
-git clone git@github.com:timcraft/noko.git
-```
+    $ gem install noko
 
 
-## Quick start
+## Getting started
 
 ```ruby
 require 'noko'
 
-noko = Noko::Client.new(token: 'YOUR PERSONAL ACCESS TOKEN')
+noko = Noko::Client.new(token: ENV.fetch('NOKO_TOKEN'))
 
 noko.get_projects.each do |project|
   puts project.name
