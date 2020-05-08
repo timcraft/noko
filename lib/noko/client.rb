@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'noko/version'
 require 'noko/errors'
 require 'noko/link_header'

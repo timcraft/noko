@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Noko
   class Client
     def get_users(params = nil)
