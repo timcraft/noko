@@ -1,3 +1,11 @@
+# 1.6.0
+
+* Added Noko::NotFound for 404 responses
+
+* Added Noko::ClientError for 4xx responses
+
+* Added Noko::ServerError for 5xx responses
+
 # 1.5.0
 
 * Added methods for marking entries invoiced (thanks @lcx)
