@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'rake', '~> 12'
+gem 'rake'
 gem 'webmock', '~> 3'
 gem 'minitest', '5.11.3'
