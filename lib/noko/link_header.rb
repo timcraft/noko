@@ -2,7 +2,7 @@ require 'noko/record'
 require 'uri'
 
 module Noko
-  module LinkHeader # :nodoc:
+  module LinkHeader
     extend self
 
     REGEXP = /<([^>]+)>; rel="(\w+)"/
@@ -13,4 +13,6 @@ module Noko
       end
     end
   end
+
+  private_constant :LinkHeader
 end

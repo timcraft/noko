@@ -1,7 +1,7 @@
 require 'cgi'
 
 module Noko
-  module Params # :nodoc:
+  module Params
     extend self
 
     def join(path, params = nil)
@@ -24,4 +24,6 @@ module Noko
       CGI.escape(component.to_s)
     end
   end
+
+  private_constant :Params
 end
