@@ -52,26 +52,12 @@ module Noko
         http_request.body = JSON.generate(body_object)
       end
 
-      parse(@http.request(http_request))
-    end
+      response = @http.request(http_request)
 
-    def parse(http_response)
-      case http_response
-      when Net::HTTPNoContent
-        :no_content
-      when Net::HTTPSuccess
-        if http_response['Content-Type'] && http_response['Content-Type'].split(';').first == 'application/json'
-          JSON.parse(http_response.body, symbolize_names: true, object_class: Record).tap do |object|
-            if http_response['Link']
-              object.singleton_class.module_eval { attr_accessor :link }
-              object.link = LinkHeader.parse(http_response['Link'])
-            end
-          end
-        else
-          http_response.body
-        end
+      if response.is_a?(Net::HTTPSuccess)
+        Response.parse(response)
       else
-        raise Response.error(http_response)
+        raise Response.error(response)
       end
     end
   end

@@ -5,6 +5,25 @@ module Noko
   module Response
     extend self
 
+    def parse(response)
+      if response.is_a?(Net::HTTPNoContent)
+        return :no_content
+      end
+
+      if response.content_type == 'application/json'
+        object = JSON.parse(response.body, symbolize_names: true, object_class: Record)
+
+        if response['Link']
+          object.singleton_class.module_eval { attr_accessor :link }
+          object.link = LinkHeader.parse(response['Link'])
+        end
+
+        return object
+      end
+
+      response.body
+    end
+
     def error(response)
       if response.content_type == 'application/json'
         body = JSON.parse(response.body)
