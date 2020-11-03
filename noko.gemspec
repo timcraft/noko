@@ -15,6 +15,6 @@ Gem::Specification.new do |s|
     'homepage' => 'https://github.com/timcraft/noko',
     'source_code_uri' => 'https://github.com/timcraft/noko',
     'bug_tracker_uri' => 'https://github.com/timcraft/noko/issues',
-    'changelog_uri' => 'https://github.com/timcraft/noko/blob/master/CHANGES.md'
+    'changelog_uri' => 'https://github.com/timcraft/noko/blob/main/CHANGES.md'
   }
 end
