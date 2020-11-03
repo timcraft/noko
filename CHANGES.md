@@ -1,3 +1,9 @@
+# 1.7.0
+
+* Added methods for webhook endpoints (#7)
+
+* Fixed outdated changelog_uri
+
 # 1.6.0
 
 * Added Noko::NotFound for 404 responses
