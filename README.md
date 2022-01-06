@@ -1,8 +1,6 @@
 # noko
 
-[![Gem Version](https://badge.fury.io/rb/noko.svg)](https://badge.fury.io/rb/noko)
-![Build Status](https://github.com/timcraft/noko/workflows/Test/badge.svg)
-
+[![Gem Version](https://badge.fury.io/rb/noko.svg)](https://badge.fury.io/rb/noko) [![Test Status](https://github.com/timcraft/noko/actions/workflows/test.yml/badge.svg)](https://github.com/timcraft/noko/actions/workflows/test.yml)
 
 Ruby client for the [Noko API](https://developer.nokotime.com/v2/).
 
