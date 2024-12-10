@@ -1,3 +1,17 @@
+# 2.0.0
+
+* **Required ruby version is now 3.1.0**
+
+* Added methods for team resources
+
+* Added Noko::Record#inspect method
+
+* Added support for personal access tokens in ~/.netrc
+
+* Changed from cgi to uri for encoding query parameters
+
+* Added dependencies on net/http, json, and uri gems
+
 # 1.7.0
 
 * Added methods for webhook endpoints (#7)
