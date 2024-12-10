@@ -18,5 +18,6 @@ Gem::Specification.new do |s|
     'changelog_uri' => 'https://github.com/timcraft/noko/blob/main/CHANGES.md'
   }
   s.add_dependency 'net-http'
+  s.add_dependency 'json', '~> 2'
   s.add_dependency 'uri', '~> 1'
 end
