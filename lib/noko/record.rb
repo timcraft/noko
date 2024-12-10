@@ -13,7 +13,7 @@ module Noko
     end
 
     def method_missing(name, *args, &block)
-      if @attributes.has_key?(name) && args.empty? && block.nil?
+      if @attributes.key?(name) && args.empty? && block.nil?
         return @attributes[name]
       else
         super name, *args, &block
@@ -21,7 +21,7 @@ module Noko
     end
 
     def respond_to_missing?(name, include_private = false)
-      @attributes.has_key?(name)
+      @attributes.key?(name)
     end
 
     def to_h
