@@ -17,5 +17,6 @@ Gem::Specification.new do |s|
     'bug_tracker_uri' => 'https://github.com/timcraft/noko/issues',
     'changelog_uri' => 'https://github.com/timcraft/noko/blob/main/CHANGES.md'
   }
+  s.add_dependency 'net-http'
   s.add_dependency 'uri', '~> 1'
 end
