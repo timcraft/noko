@@ -13,7 +13,7 @@ RSpec.describe 'Noko::Client webhooks methods' do
     it 'encodes params' do
       expect_request(:get, "#{base_url}/webhooks?name=Notifier")
 
-      client.get_webhooks(name: "Notifier")
+      client.get_webhooks(name: 'Notifier')
     end
   end
 
@@ -29,7 +29,7 @@ RSpec.describe 'Noko::Client webhooks methods' do
     it 'returns a record' do
       expect_request(:post, "#{base_url}/webhooks").with(json_request).to_return(json_response.merge(status: 201))
 
-      expect(client.create_webhook(name: "My Webhook", payload_uri: "http://testnokoapp.com/webhooks/entry_events", events: ["*"])).to be_instance_of(Noko::Record)
+      expect(client.create_webhook(name: 'My Webhook', payload_uri: 'http://testnokoapp.com/webhooks/entry_events', events: ['*'])).to be_instance_of(Noko::Record)
     end
   end
 
@@ -37,7 +37,7 @@ RSpec.describe 'Noko::Client webhooks methods' do
     it 'returns a record' do
       expect_request(:put, "#{base_url}/webhooks/#{id}").with(json_request).to_return(json_response)
 
-      expect(client.update_webhook(id, name: "The Best Webhook", payload_uri: "http://dabestnokoapp.com/webhooks/entry_events")).to be_instance_of(Noko::Record)
+      expect(client.update_webhook(id, name: 'The Best Webhook', payload_uri: 'http://dabestnokoapp.com/webhooks/entry_events')).to be_instance_of(Noko::Record)
     end
   end
 
@@ -45,7 +45,7 @@ RSpec.describe 'Noko::Client webhooks methods' do
     it 'returns a record' do
       expect_request(:put, "#{base_url}/webhooks/#{id}/add_events").with(json_request).to_return(json_response)
 
-      expect(client.add_webhook_events(id, events: ["entry.updated"])).to be_instance_of(Noko::Record)
+      expect(client.add_webhook_events(id, events: ['entry.updated'])).to be_instance_of(Noko::Record)
     end
   end
 
@@ -53,7 +53,7 @@ RSpec.describe 'Noko::Client webhooks methods' do
     it 'returns a record' do
       expect_request(:put, "#{base_url}/webhooks/#{id}/remove_events").with(json_request).to_return(json_response)
 
-      expect(client.remove_webhook_events(id, events: ["tag.created", "tag.deleted.merged"])).to be_instance_of(Noko::Record)
+      expect(client.remove_webhook_events(id, events: ['tag.created', 'tag.deleted.merged'])).to be_instance_of(Noko::Record)
     end
   end
 
