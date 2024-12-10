@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Noko
   class Record
     def initialize(attributes = {})
@@ -10,6 +12,10 @@ module Noko
 
     def []=(name, value)
       @attributes[name] = value
+    end
+
+    def inspect
+      '#<' + self.class.name + ' ' + @attributes.map { "#{_1}=#{_2.inspect}" }.join(', ') + '>'
     end
 
     def method_missing(name, *args, &block)
