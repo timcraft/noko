@@ -1,16 +1,14 @@
 require 'noko/record'
 require 'uri'
 
-module Noko
-  module LinkHeader
-    extend self
+module Noko::LinkHeader
+  extend self
 
-    REGEXP = /<([^>]+)>; rel="(\w+)"/
+  REGEXP = /<([^>]+)>; rel="(\w+)"/
 
-    def parse(string)
-      string.scan(REGEXP).each_with_object(Record.new) do |(uri, rel), record|
-        record[rel.to_sym] = URI.parse(uri).request_uri
-      end
+  def parse(string)
+    string.scan(REGEXP).each_with_object(Noko::Record.new) do |(uri, rel), record|
+      record[rel.to_sym] = URI.parse(uri).request_uri
     end
   end
 end
