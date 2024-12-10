@@ -13,8 +13,12 @@ module Noko
     def initialize(options = {})
       if options.key?(:access_token)
         @auth_header, @auth_value = 'Authorization', "token #{options[:access_token]}"
-      else
+      elsif options.key?(:token)
         @auth_header, @auth_value = 'X-NokoToken', options.fetch(:token)
+      elsif !(netrc = load_netrc_credentials).nil?
+        @auth_header, @auth_value = 'X-NokoToken', netrc.password
+      else
+        raise ArgumentError, 'access_token or token required for authentication'
       end
 
       @user_agent = options.fetch(:user_agent) { "noko/#{VERSION} ruby/#{RUBY_VERSION}" }
@@ -60,6 +64,13 @@ module Noko
       else
         raise Response.error(response)
       end
+    end
+
+    def load_netrc_credentials
+      require 'net/netrc'
+
+      Net::Netrc.locate('api.nokotime.com')
+    rescue LoadError
     end
   end
 end
