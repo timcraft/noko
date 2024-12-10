@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'cgi'
+require 'uri'
 
 module Noko
   module Params
@@ -12,17 +12,11 @@ module Noko
     end
 
     def encode(params)
-      params.map { |k, v| "#{escape(k)}=#{array_escape(v)}" }.join('&')
+      params.map { |k, v| escape(k) + '=' + Array(v).map { escape(_1) }.join(',') }.join('&')
     end
 
-    private
-
-    def array_escape(object)
-      Array(object).map { |value| escape(value) }.join(',')
-    end
-
-    def escape(component)
-      CGI.escape(component.to_s)
+    def escape(value)
+      URI.encode_uri_component(value)
     end
   end
 end
