@@ -13,6 +13,4 @@ module Noko
       end
     end
   end
-
-  private_constant :LinkHeader
 end

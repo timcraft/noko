@@ -25,6 +25,4 @@ module Noko
       CGI.escape(component.to_s)
     end
   end
-
-  private_constant :Params
 end

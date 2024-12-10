@@ -47,6 +47,4 @@ module Noko
       end
     end
   end
-
-  private_constant :Response
 end
