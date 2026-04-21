@@ -1,3 +1,7 @@
+# 2.1.0
+
+* Added openssl dependency
+
 # 2.0.0
 
 * **Required ruby version is now 3.1.0**
