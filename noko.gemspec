@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.1.0'
   s.require_path = 'lib'
   s.add_dependency 'net-http'
+  s.add_dependency 'openssl'
   s.add_dependency 'json', '~> 2'
   s.add_dependency 'uri', '~> 1'
 end
